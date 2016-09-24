@@ -44,6 +44,8 @@ public class EventsFragment extends Fragment {
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> image = new ArrayList<>();
     ArrayList<String> category = new ArrayList<>();
+    ArrayList<String> description = new ArrayList<>();
+    ArrayList<String> experience = new ArrayList<>();
 
     public EventsFragment() {
     }
@@ -77,7 +79,7 @@ public class EventsFragment extends Fragment {
         search = (EditText) rootView.findViewById( R.id.search);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventsrecyclerview);
         mRecyclerView.setHasFixedSize(true);
-        mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category);
+        mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category, description, experience);
         mRecyclerView.setAdapter(mEventsAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(llm);
@@ -107,6 +109,9 @@ public class EventsFragment extends Fragment {
                 ArrayList<String> sname = new ArrayList<>();
                 ArrayList<String> simage = new ArrayList<>();
                 ArrayList<String> scategory = new ArrayList<>();
+                ArrayList<String> sdescription = new ArrayList<>();
+                ArrayList<String> sexperience = new ArrayList<>();
+
 
                 for (int i = 0; i < name.size(); i++) {
 
@@ -117,11 +122,13 @@ public class EventsFragment extends Fragment {
                         sid.add(id.get(i));
                         simage.add(image.get(i));
                         scategory.add(category.get(i));
+                        sdescription.add(description.get(i));
+                        sexperience.add(experience.get(i));
                     }
                 }
 
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                mEventsAdapter = new EventsAdapter(getContext(), sid, sname, simage, scategory);
+                mEventsAdapter = new EventsAdapter(getContext(), sid, sname, simage, scategory, sdescription, sexperience);
                 mRecyclerView.setAdapter(mEventsAdapter);
                 mEventsAdapter.notifyDataSetChanged();
             }
@@ -146,11 +153,14 @@ public class EventsFragment extends Fragment {
                                     name.add(obj.getString("name"));
                                     category.add(obj.getString("category"));
                                     image.add(obj.getString("image"));
+                                    description.add(obj.getString("description"));
+                                    experience.add(obj.getString("experience"));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println(id);
+                            System.out.println("description " + description);
+                            System.out.println("exper " + experience);
                             mEventsAdapter.notifyDataSetChanged();
                         }
                     }, new Response.ErrorListener() {
