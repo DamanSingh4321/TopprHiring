@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,7 +37,9 @@ import java.util.Map;
  */
 public class EventsFragment extends Fragment {
 
+    private RecyclerView mRecyclerView;
     private EventsAdapter mEventsAdapter;
+    private EditText search;
     ArrayList<String> id = new ArrayList<>();
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> image = new ArrayList<>();
@@ -69,12 +74,14 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_events, container, false);
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.eventsrecyclerview);
-        rv.setHasFixedSize(true);
+        search = (EditText) rootView.findViewById( R.id.search);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventsrecyclerview);
+        mRecyclerView.setHasFixedSize(true);
         mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category);
-        rv.setAdapter(mEventsAdapter);
+        mRecyclerView.setAdapter(mEventsAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
+        mRecyclerView.setLayoutManager(llm);
+        addTextListener();
         return rootView;
     }
 
@@ -82,6 +89,43 @@ public class EventsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Data();
+    }
+
+    public void addTextListener(){
+
+        search.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {}
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+
+                query = query.toString().toLowerCase();
+
+                ArrayList<String> sid = new ArrayList<>();
+                ArrayList<String> sname = new ArrayList<>();
+                ArrayList<String> simage = new ArrayList<>();
+                ArrayList<String> scategory = new ArrayList<>();
+
+                for (int i = 0; i < name.size(); i++) {
+
+                    final String searchname = name.get(i).toLowerCase();
+                    final String searchcategory = category.get(i).toLowerCase();
+                    if (searchname.contains(query) || searchcategory.contains(query) ) {
+                        sname.add(name.get(i));
+                        sid.add(id.get(i));
+                        simage.add(image.get(i));
+                        scategory.add(category.get(i));
+                    }
+                }
+
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mEventsAdapter = new EventsAdapter(getContext(), sid, sname, simage, scategory);
+                mRecyclerView.setAdapter(mEventsAdapter);
+                mEventsAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void Data() {
