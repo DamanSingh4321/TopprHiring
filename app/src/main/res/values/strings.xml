@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TopprHiring</string>
+    <string name="app_name">DamanToppr</string>
     <string name="eventimage">EventImage</string>
     <string name="sort_by">Preferences</string>
     <string name="settings_key">settingsKey</string>

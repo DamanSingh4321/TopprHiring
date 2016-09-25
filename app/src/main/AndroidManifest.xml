@@ -17,9 +17,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Description" />
-        <activity android:name=".FavouriteAcitivity" />
-        <activity android:name=".SettingActivity"></activity>
+        <activity
+            android:name=".Description"
+            android:label="Details"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".FavouriteAcitivity"
+            android:label="Favourites"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".ChartActivity"></activity>
     </application>
 
 </manifest>

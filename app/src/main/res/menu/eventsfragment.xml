@@ -5,11 +5,17 @@
     <item
         android:id="@+id/action_fav"
         android:title="Favourite"
+        android:icon="@drawable/ic_star_black_24dp"
         app:showAsAction="ifRoom" />
 
     <item
         android:title="Settings"
         app:showAsAction="never"
         android:id="@+id/action_settings" />
+
+    <item
+        android:title="Chart"
+        app:showAsAction="never"
+        android:id="@+id/action_chart" />
 
 </menu>

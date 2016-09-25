@@ -83,6 +83,11 @@ public class EventsFragment extends Fragment {
             startActivity(intent);
             return true;
         }
+        if (id == R.id.action_chart) {
+            Intent intent = new Intent(getActivity(),ChartActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
