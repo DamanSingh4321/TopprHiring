@@ -10,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         public CardView mCardView;
         public TextView txtname, txtcategory;
         public ImageView imgevent;
-        public Button btnfav;
+        public LikeButton btnfav;
 
         public MyViewHolder(View v) {
             super(v);
@@ -37,7 +38,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             txtname = (TextView) v.findViewById(R.id.event_name);
             txtcategory = (TextView) v.findViewById(R.id.event_category);
             imgevent = (ImageView) v.findViewById(R.id.event_image);
-            btnfav = (Button) v.findViewById(R.id.btnfav);
+            btnfav = (LikeButton) v.findViewById(R.id.btnfav);
         }
     }
 
@@ -76,13 +77,22 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             String imagest = image.get(position);
             final String imagestr = imagest.replace("\\","");
             Picasso.with(mContext).load(imagestr).fit().into(holder.imgevent);
-            holder.btnfav.setText(favourite.get(position));
-            holder.btnfav.setOnClickListener(new View.OnClickListener() {
+            if(favourite.get(position).equals("YES")){
+                holder.btnfav.setLiked(true);
+            }
+            else
+                holder.btnfav.setLiked(false);
+            holder.btnfav.setOnLikeListener(new OnLikeListener() {
                 @Override
-                public void onClick(View view) {
+                public void liked(LikeButton likeButton) {
                     DatabaseHandler handler = new DatabaseHandler(mContext);
                     handler.update("YES", id.get(holder.getAdapterPosition()));
-                    holder.btnfav.setText(favourite.get(position));
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    DatabaseHandler handler = new DatabaseHandler(mContext);
+                    handler.update("NO", id.get(holder.getAdapterPosition()));
                 }
             });
             holder.mCardView.setOnClickListener(new View.OnClickListener() {

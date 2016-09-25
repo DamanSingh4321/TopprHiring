@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class FavouriteFragment extends Fragment {
     private RecyclerView mRecyclerView;
-    private EventsAdapter mEventsAdapter;
+    private FavouriteAdapter mfavouriteAdapter;
     private EditText search;
     private DatabaseHandler handler;
     ArrayList<String> id = new ArrayList<>();
@@ -58,8 +58,8 @@ public class FavouriteFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.favrecyclerview);
         mRecyclerView.setHasFixedSize(true);
         handler = new DatabaseHandler(getContext());
-        mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category, description, experience, favourite);
-        mRecyclerView.setAdapter(mEventsAdapter);
+        mfavouriteAdapter = new FavouriteAdapter(getContext(), id, name, image, category, description, experience, favourite);
+        mRecyclerView.setAdapter(mfavouriteAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(llm);
         PopulateList();
@@ -70,7 +70,8 @@ public class FavouriteFragment extends Fragment {
         ArrayList<Events> eventsArrayList = handler.getAllEvents();
         for (int i = 0; i < eventsArrayList.size(); i++) {
             Events events = eventsArrayList.get(i);
-            if(events.getFavourite() == "YES") {
+            System.out.println(events.getFavourite());
+            if(events.getFavourite().equals("YES")) {
                 id.add(events.getId());
                 name.add(events.getName());
                 image.add(events.getImage());
@@ -80,6 +81,6 @@ public class FavouriteFragment extends Fragment {
                 favourite.add(events.getFavourite());
             }
         }
-        mEventsAdapter.notifyDataSetChanged();
+        mfavouriteAdapter.notifyDataSetChanged();
     }
 }
