@@ -2,7 +2,9 @@ package com.singh.daman.topprhiring;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -49,6 +51,7 @@ public class EventsFragment extends Fragment {
     ArrayList<String> description = new ArrayList<>();
     ArrayList<String> experience = new ArrayList<>();
     ArrayList<String> favourite = new ArrayList<>();
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public EventsFragment() {
     }
@@ -83,6 +86,7 @@ public class EventsFragment extends Fragment {
         search = (EditText) rootView.findViewById( R.id.search);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventsrecyclerview);
         mRecyclerView.setHasFixedSize(true);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         handler = new DatabaseHandler(getContext());
         mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category, description, experience, favourite);
         mRecyclerView.setAdapter(mEventsAdapter);
@@ -91,6 +95,20 @@ public class EventsFragment extends Fragment {
         Data();
         PopulateList();
         addTextListener();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                ( new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Data();
+                        PopulateList();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
         return rootView;
     }
 
@@ -113,7 +131,6 @@ public class EventsFragment extends Fragment {
                 ArrayList<String> sdescription = new ArrayList<>();
                 ArrayList<String> sexperience = new ArrayList<>();
                 ArrayList<String> sfavourite = new ArrayList<>();
-
 
                 for (int i = 0; i < name.size(); i++) {
 
@@ -139,6 +156,13 @@ public class EventsFragment extends Fragment {
     }
 
     public void PopulateList(){
+        id.clear();
+        name.clear();
+        image.clear();
+        category.clear();
+        description.clear();
+        experience.clear();
+        favourite.clear();
         ArrayList<Events> eventsArrayList = handler.getAllEvents();
         for (int i = 0; i < eventsArrayList.size(); i++){
             Events events = eventsArrayList.get(i);

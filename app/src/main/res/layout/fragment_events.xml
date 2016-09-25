@@ -12,11 +12,18 @@
         android:textSize="16sp"
         android:hint="Search here" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipeRefreshLayout">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/eventsrecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:background="#FFF3E0" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
