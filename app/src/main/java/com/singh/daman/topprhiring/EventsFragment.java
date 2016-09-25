@@ -1,8 +1,10 @@
 package com.singh.daman.topprhiring;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,6 +74,11 @@ public class EventsFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_fav) {
             Intent intent = new Intent(getActivity(),FavouriteAcitivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(),SettingActivity.class);
             startActivity(intent);
             return true;
         }
@@ -155,6 +162,13 @@ public class EventsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Data();
+        PopulateList();
+    }
+
     public void PopulateList(){
         id.clear();
         name.clear();
@@ -163,17 +177,30 @@ public class EventsFragment extends Fragment {
         description.clear();
         experience.clear();
         favourite.clear();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final String get = prefs.getString(getString(R.string.settings_key), getString(R.string.all));
         ArrayList<Events> eventsArrayList = handler.getAllEvents();
         for (int i = 0; i < eventsArrayList.size(); i++){
             Events events = eventsArrayList.get(i);
             System.out.println(events);
-            id.add(events.getId());
-            name.add(events.getName());
-            image.add(events.getImage());
-            category.add(events.getCategory());
-            description.add(events.getDescription());
-            experience.add(events.getExperience());
-            favourite.add(events.getFavourite());
+            if (get.equals("all")) {
+                id.add(events.getId());
+                name.add(events.getName());
+                image.add(events.getImage());
+                category.add(events.getCategory());
+                description.add(events.getDescription());
+                experience.add(events.getExperience());
+                favourite.add(events.getFavourite());
+            }
+            else if(events.getCategory().equals(get)){
+                id.add(events.getId());
+                name.add(events.getName());
+                image.add(events.getImage());
+                category.add(events.getCategory());
+                description.add(events.getDescription());
+                experience.add(events.getExperience());
+                favourite.add(events.getFavourite());
+            }
         }mEventsAdapter.notifyDataSetChanged();
     }
 

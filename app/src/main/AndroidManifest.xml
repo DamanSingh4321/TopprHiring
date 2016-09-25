@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Description" />
-        <activity android:name=".FavouriteAcitivity"></activity>
+        <activity android:name=".FavouriteAcitivity" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

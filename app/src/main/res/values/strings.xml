@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">TopprHiring</string>
     <string name="eventimage">EventImage</string>
+    <string name="sort_by">Preferences</string>
+    <string name="settings_key">settingsKey</string>
+    <string name="all">all</string>
+    <string name="search">Search</string>
+    <string name="ok">OK</string>
 </resources>
