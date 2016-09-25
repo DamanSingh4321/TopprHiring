@@ -85,6 +85,7 @@ public class EventsFragment extends Fragment {
         }
         if (id == R.id.action_chart) {
             Intent intent = new Intent(getActivity(),ChartActivity.class);
+            intent.putExtra("DATA", category);
             startActivity(intent);
             return true;
         }

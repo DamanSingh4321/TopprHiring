@@ -1,10 +1,14 @@
 package com.singh.daman.topprhiring;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,23 +33,25 @@ public class Description extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.detail, menu);
+        getMenuInflater().inflate(R.menu.detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-//        if (id == R.id.action_settings) {
-//            startActivity(new Intent(this, SettingsActivity.class));
-//            return true;
-//        }
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingActivity.class));
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
 
     public static class DetailFragment extends Fragment {
+        String name;
 
         public DetailFragment() {
             setHasOptionsMenu(true);
@@ -62,7 +68,7 @@ public class Description extends AppCompatActivity {
             String image = extras.getString("EXTRA_IMAGE");
             String exp = extras.getString("EXTRA_EXP");
             String desc = extras.getString("EXTRA_DESC");
-            String name = extras.getString("EXTRA_NAME");
+            name = extras.getString("EXTRA_NAME");
 
             System.out.println("desc  "+desc);
 
@@ -77,6 +83,31 @@ public class Description extends AppCompatActivity {
 
             return rootView;
         }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.detailfragment, menu);
+
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+
+            ShareActionProvider mShareActionProvider =
+                    (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            } else {
+            }
+        }
+
+        private Intent createShareForecastIntent() {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    name + " #TOPPR_EVENTS");
+            return shareIntent;
+        }
+
 
     }
 }

@@ -15,7 +15,8 @@
 
     <item
         android:title="Chart"
-        app:showAsAction="never"
+        android:icon="@drawable/ic_insert_chart_black_24dp"
+        app:showAsAction="ifRoom"
         android:id="@+id/action_chart" />
 
 </menu>

@@ -6,4 +6,7 @@
     <string name="all">all</string>
     <string name="search">Search</string>
     <string name="ok">OK</string>
+    <string name="bot_wars">Bot wars</string>
+    <string name="hackathons">Hackathons</string>
+    <string name="hiring_challenges">Hiring Challenges</string>
 </resources>
