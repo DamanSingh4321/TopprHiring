@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -93,6 +94,7 @@ public class EventsFragment extends Fragment {
         search = (EditText) rootView.findViewById( R.id.search);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventsrecyclerview);
         mRecyclerView.setHasFixedSize(true);
+        this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         handler = new DatabaseHandler(getContext());
         mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category, description, experience, favourite);

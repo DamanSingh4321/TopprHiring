@@ -20,38 +20,53 @@
            android:orientation="horizontal">
 
            <ImageView
-               android:layout_width="100dp"
-               android:layout_height="100dp"
+               android:layout_width="150dp"
+               android:layout_height="150dp"
                android:id="@+id/event_image"
                android:contentDescription="@string/eventimage" />
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical"
+               android:gravity="center_vertical"
+               android:paddingLeft="10dp">
 
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:id="@+id/event_name"/>
+               android:id="@+id/event_name"
+               android:textStyle="bold"
+               android:textSize="18sp" />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/event_category"
+                   android:textStyle="bold"
+                   android:textSize="14sp" />
+
+               <com.like.LikeButton
+                   android:layout_width="50dp"
+                   android:layout_height="50dp"
+                   android:id="@+id/btnfav"
+                   app:icon_type="star"
+                   app:circle_start_color="@color/colorPrimary"
+                   app:like_drawable="@drawable/thumb_on"
+                   app:unlike_drawable="@drawable/thumb_off"
+                   app:dots_primary_color="@color/colorAccent"
+                   app:dots_secondary_color="@color/colorPrimary"
+                   app:circle_end_color="@color/colorAccent"
+                   app:icon_size="50dp"
+                   app:liked="true"
+                   app:anim_scale_factor="2"
+                   app:is_enabled="false"
+                   android:layout_gravity="right" />
+
+
+           </LinearLayout>
 
        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/event_category"/>
-
-        <com.like.LikeButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/btnfav"
-            app:icon_type="star"
-            app:circle_start_color="@color/colorPrimary"
-            app:like_drawable="@drawable/thumb_on"
-            app:unlike_drawable="@drawable/thumb_off"
-            app:dots_primary_color="@color/colorAccent"
-            app:dots_secondary_color="@color/colorPrimary"
-            app:circle_end_color="@color/colorAccent"
-            app:icon_size="25dp"
-            app:liked="true"
-            app:anim_scale_factor="2"
-            app:is_enabled="false" />
         
     </LinearLayout>
     

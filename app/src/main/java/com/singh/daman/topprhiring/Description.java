@@ -66,10 +66,12 @@ public class Description extends AppCompatActivity {
 
             System.out.println("desc  "+desc);
 
+            ((TextView) rootView.findViewById(R.id.desc_name))
+                    .setText(name);
             ((TextView) rootView.findViewById(R.id.desc_exp))
-                    .setText(exp);
+                    .setText("Experience: "+exp);
             ((TextView) rootView.findViewById(R.id.description))
-                    .setText(desc);
+                    .setText("Description: \n"+desc);
             ImageView imageView = (ImageView) rootView.findViewById(R.id.desc_image);
             Picasso.with(getContext()).load(image).fit().into(imageView);
 
