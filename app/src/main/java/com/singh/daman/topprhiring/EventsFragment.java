@@ -1,5 +1,6 @@
 package com.singh.daman.topprhiring;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -60,16 +61,17 @@ public class EventsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-       // inflater.inflate(R.menu.moviesfragment, menu);
+        inflater.inflate(R.menu.eventsfragment, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-////        if (id == R.id.action_refresh) {
-////            Data();
-////            return true;
-////        }
+        int id = item.getItemId();
+        if (id == R.id.action_fav) {
+            Intent intent = new Intent(getActivity(),FavouriteAcitivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

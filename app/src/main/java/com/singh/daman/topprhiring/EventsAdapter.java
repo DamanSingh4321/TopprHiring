@@ -87,12 +87,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                 public void liked(LikeButton likeButton) {
                     DatabaseHandler handler = new DatabaseHandler(mContext);
                     handler.update("YES", id.get(holder.getAdapterPosition()));
+                    favourite.set(position, "YES");
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
                     DatabaseHandler handler = new DatabaseHandler(mContext);
                     handler.update("NO", id.get(holder.getAdapterPosition()));
+                    favourite.set(position, "NO");
                 }
             });
             holder.mCardView.setOnClickListener(new View.OnClickListener() {

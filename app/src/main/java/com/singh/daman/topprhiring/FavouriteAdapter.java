@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -76,6 +77,20 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
             String imagest = image.get(position);
             final String imagestr = imagest.replace("\\","");
             Picasso.with(mContext).load(imagestr).fit().into(holder.imgevent);
+            holder.btnfav.setLiked(true);
+            holder.btnfav.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    DatabaseHandler handler = new DatabaseHandler(mContext);
+                    handler.update("YES", id.get(holder.getAdapterPosition()));
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    DatabaseHandler handler = new DatabaseHandler(mContext);
+                    handler.update("NO", id.get(holder.getAdapterPosition()));
+                }
+            });
             holder.mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
