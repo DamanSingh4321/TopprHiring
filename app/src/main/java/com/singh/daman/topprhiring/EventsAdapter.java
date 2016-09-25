@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,13 +22,14 @@ import java.util.ArrayList;
  * Created by daman on 24/9/16.
  */
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHolder> {
-    ArrayList<String> id, name, image, category, description, experience;
+    ArrayList<String> id, name, image, category, description, experience, favourite;
     Context mContext;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public CardView mCardView;
         public TextView txtname, txtcategory;
         public ImageView imgevent;
+        public Button btnfav;
 
         public MyViewHolder(View v) {
             super(v);
@@ -35,13 +37,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             txtname = (TextView) v.findViewById(R.id.event_name);
             txtcategory = (TextView) v.findViewById(R.id.event_category);
             imgevent = (ImageView) v.findViewById(R.id.event_image);
+            btnfav = (Button) v.findViewById(R.id.btnfav);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public EventsAdapter(Context context, ArrayList<String> id, ArrayList<String> name,
                          ArrayList<String> image, ArrayList<String> category,
-                         ArrayList<String> description, ArrayList<String> experience) {
+                         ArrayList<String> description, ArrayList<String> experience,
+                         ArrayList<String> favourite) {
 
         this.mContext = context;
         this.id = id;
@@ -50,6 +54,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         this.category = category;
         this.description = description;
         this.experience = experience;
+        this.favourite = favourite;
     }
 
     @Override
@@ -64,13 +69,22 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         try {
             holder.txtname.setText(name.get(position));
             holder.txtcategory.setText(category.get(position));
             String imagest = image.get(position);
             final String imagestr = imagest.replace("\\","");
             Picasso.with(mContext).load(imagestr).fit().into(holder.imgevent);
+            holder.btnfav.setText(favourite.get(position));
+            holder.btnfav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatabaseHandler handler = new DatabaseHandler(mContext);
+                    handler.update("YES", id.get(holder.getAdapterPosition()));
+                    holder.btnfav.setText(favourite.get(position));
+                }
+            });
             holder.mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

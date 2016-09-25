@@ -40,12 +40,14 @@ public class EventsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private EventsAdapter mEventsAdapter;
     private EditText search;
+    private DatabaseHandler handler;
     ArrayList<String> id = new ArrayList<>();
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> image = new ArrayList<>();
     ArrayList<String> category = new ArrayList<>();
     ArrayList<String> description = new ArrayList<>();
     ArrayList<String> experience = new ArrayList<>();
+    ArrayList<String> favourite = new ArrayList<>();
 
     public EventsFragment() {
     }
@@ -79,18 +81,15 @@ public class EventsFragment extends Fragment {
         search = (EditText) rootView.findViewById( R.id.search);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.eventsrecyclerview);
         mRecyclerView.setHasFixedSize(true);
-        mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category, description, experience);
+        handler = new DatabaseHandler(getContext());
+        mEventsAdapter = new EventsAdapter(getContext(), id, name, image, category, description, experience, favourite);
         mRecyclerView.setAdapter(mEventsAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(llm);
+        Data();
+        PopulateList();
         addTextListener();
         return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Data();
     }
 
     public void addTextListener(){
@@ -111,6 +110,7 @@ public class EventsFragment extends Fragment {
                 ArrayList<String> scategory = new ArrayList<>();
                 ArrayList<String> sdescription = new ArrayList<>();
                 ArrayList<String> sexperience = new ArrayList<>();
+                ArrayList<String> sfavourite = new ArrayList<>();
 
 
                 for (int i = 0; i < name.size(); i++) {
@@ -124,15 +124,31 @@ public class EventsFragment extends Fragment {
                         scategory.add(category.get(i));
                         sdescription.add(description.get(i));
                         sexperience.add(experience.get(i));
+                        sfavourite.add(favourite.get(i));
                     }
                 }
 
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                mEventsAdapter = new EventsAdapter(getContext(), sid, sname, simage, scategory, sdescription, sexperience);
+                mEventsAdapter = new EventsAdapter(getContext(), sid, sname, simage, scategory, sdescription, sexperience, sfavourite);
                 mRecyclerView.setAdapter(mEventsAdapter);
                 mEventsAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public void PopulateList(){
+        ArrayList<Events> eventsArrayList = handler.getAllEvents();
+        for (int i = 0; i < eventsArrayList.size(); i++){
+            Events events = eventsArrayList.get(i);
+            System.out.println(events);
+            id.add(events.getId());
+            name.add(events.getName());
+            image.add(events.getImage());
+            category.add(events.getCategory());
+            description.add(events.getDescription());
+            experience.add(events.getExperience());
+            favourite.add(events.getFavourite());
+        }mEventsAdapter.notifyDataSetChanged();
     }
 
     public void Data() {
@@ -149,17 +165,20 @@ public class EventsFragment extends Fragment {
                                 JSONArray a1obj = new JSONArray(syncresponse);
                                 for (int j = 0; j < a1obj.length(); j++) {
                                     JSONObject obj = a1obj.getJSONObject(j);
-                                    id.add(obj.getString("id"));
-                                    name.add(obj.getString("name"));
-                                    category.add(obj.getString("category"));
-                                    image.add(obj.getString("image"));
-                                    description.add(obj.getString("description"));
-                                    experience.add(obj.getString("experience"));
+                                    Events events = new Events();
+                                    events.setId(obj.getString("id"));
+                                    events.setName(obj.getString("name"));
+                                    events.setCategory(obj.getString("category"));
+                                    events.setImage(obj.getString("image"));
+                                    events.setDescription(obj.getString("description"));
+                                    events.setExperience(obj.getString("experience"));
+                                    events.setFavourite("NO");
+                                    handler.addEvents(events);
+                                    System.out.println("events:  " + events);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println("description " + description);
                             System.out.println("exper " + experience);
                             mEventsAdapter.notifyDataSetChanged();
                         }
